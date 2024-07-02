@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Text.Json;
 
-namespace WinFormsPropertyFinder.cui;
+namespace UiValueInjector;
 
 public static class ExceptionUtil
 {

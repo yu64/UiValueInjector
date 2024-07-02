@@ -1,4 +1,6 @@
 
+namespace UiValueInjector;
+
 public readonly record struct RuleName
 {
     public string Value { get; }
