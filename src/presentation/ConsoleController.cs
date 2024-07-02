@@ -6,6 +6,7 @@ using System.CommandLine.NamingConventionBinder;
 using System.Data;
 using System.Runtime.Serialization;
 using System.Text.Json;
+using WinFormsPropertyFinder.cui;
 
 namespace UiValueInjector;
 
@@ -42,37 +43,17 @@ public class ConsoleController
             "起動対象のアプリのパス"
         );
 
-        Argument<string> profile = new Argument<string>(
-            "profile",
-            "起動対象のアプリのパス"
+        Argument<string> runningConfig = new Argument<string>(
+            "runningConfig",
+            "実行内容の設定ファイル"
         );
 
-        
+        Argument<string[]> configArgs = new Argument<string[]>(
+            "configArgs",
+            "設定ファイルに引き渡す引数"
+        );
 
-        // //引数
-        // Argument<int> targetArgument = new Argument<int>(
-        //     "target",
-        //     "対象となるVisual StudioのプロセスID"
-        // );
-
-        // Argument<string> propertyPathArgument = new Argument<string>(
-        //     "propertyPath",
-        //     "対象となる階層を含むプロパティ名"
-        // );
-
-        // //オプション
-        // Option<FormatterType> canOutputJsonOption = new Option<FormatterType>(
-        //     aliases: new string[] {"--format"}, 
-        //     description: "出力形式",
-        //     getDefaultValue: () => FormatterType.CSV
-        // );
-
-        // Option<int> interval = new Option<int>(
-        //     aliases: new string[] {"--interval"}, 
-        //     description: "監視間隔(ms)",
-        //     getDefaultValue: () => 50
-        // );
-
+  
 
         //コマンド体系を定義
         return new()
@@ -80,60 +61,12 @@ public class ConsoleController
             new SubCommand("launch", "実行")
             {
                 app,
-                profile,
+                runningConfig,
+                configArgs,
+
+                CommandHandler.Create(this.Launch)
             }
 
-
-
-            // new SubCommand("get", "取得")
-            // {
-            //     new SubCommand("target", "対象となるVisualStudioのプロセスID一覧を表示する")
-            //     {
-            //         canOutputJsonOption,
-
-            //         CommandHandler.Create(this.GetTarget)
-            //     },
-
-            //     new SubCommand("property", "対象のプロパティ一覧を表示する")
-            //     {
-            //         targetArgument,
-            //         canOutputJsonOption,
-
-            //         CommandHandler.Create(this.GetProperty)
-            //     },
-
-            //     new SubCommand("focus", "フォーカスに対応する要素および対象との関係を取得する")
-            //     {
-            //         targetArgument,
-            //         canOutputJsonOption,
-
-            //         CommandHandler.Create(this.GetFocus)
-            //     }
-            // },
-
-            // new SubCommand("focus", "フォーカス移動")
-            // {
-            //     new SubCommand("property", "対象のプロパティにフォーカスする")
-            //     {
-            //         targetArgument,
-            //         propertyPathArgument,
-            //         canOutputJsonOption,
-
-            //         CommandHandler.Create(this.FocusProperty)
-            //     },
-            // },
-
-            // new SubCommand("watch", "監視")
-            // {
-            //     new SubCommand("focus", "フォーカスの変化を監視し、情報を取得する")
-            //     {
-            //         targetArgument,
-            //         canOutputJsonOption,
-            //         interval,
-
-            //         CommandHandler.Create(this.WatchFocus)
-            //     }
-            // }
         };
     }
 
@@ -141,69 +74,14 @@ public class ConsoleController
 
 //=====================================================================================================
 
-    
-    // private int GetTarget(FormatterType format)
-    // {   
-    //     return ExceptionUtil.TryCatch(0, 1, () => {
 
-    //         var result = this.usecase.GetTarget();
-    //         Console.WriteLine(format.Format(result));
-    //     });
-    // }
+    private int Launch(string app, string runningConfig, string[] configArgs)
+    {
+        return ExceptionUtil.TryCatch(0, 1, () => {
 
-    // private int GetProperty(int target, FormatterType format)
-    // {
-    //     return ExceptionUtil.TryCatch(0, 1, () => {
 
-    //         var result = this.usecase.GetProperty(target);
-    //         Console.WriteLine(format.Format(result));
-    //     });
-    // }
-
-    // private int GetFocus(int target, FormatterType format)
-    // {
-    //     return ExceptionUtil.TryCatch(0, 1, () => {
-            
-    //         var result = this.usecase.GetFocus(target);
-    //         Console.WriteLine(format.Format(ImmutableList.Create(result)));
-    //     });
-    // }
-
-    // private int FocusProperty(int target, string propertyPath, FormatterType format)
-    // {
-    //     return ExceptionUtil.TryCatch(0, 1, () => {
-            
-    //         var result = this.usecase.FocusProperty(target, propertyPath);
-    //         Console.WriteLine(format.Format(result));
-    //     });
-    // }
-
-    // private int WatchFocus(int target, FormatterType format, int interval)
-    // {
-    //     CancellationTokenSource cts = new CancellationTokenSource();
-        
-    //     void output(ImmutableList<FocusInfo> result)
-    //     {
-    //         Console.WriteLine();
-    //         Console.WriteLine(format.Format(result));
-    //     }
-
-    //     bool isStop()
-    //     {
-    //         return cts.Token.IsCancellationRequested;
-    //     }
-
-    //     return ExceptionUtil.TryCatch(0, 1, () => {            
-            
-    //         //入力待機
-    //         Task.Run(() => {
-    //             Console.ReadLine();
-    //             cts.Cancel();
-    //         });
-
-    //         this.usecase.WatchFocus(target, interval, isStop, output);
-    //     });
-    // }
+        });
+    }
 
 
 //=====================================================================================================

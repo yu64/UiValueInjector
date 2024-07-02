@@ -1,0 +1,11 @@
+
+
+rules:
+  - name: Sample1
+    timing: Always
+    elements:
+      - type: automationId
+        value: txtId
+    value: "in_{0}"
+  
+          
