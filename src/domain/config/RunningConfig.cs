@@ -12,5 +12,6 @@ public readonly record struct RunningConfig
     {
         this.Rules = rules;
     }
+
 }
 

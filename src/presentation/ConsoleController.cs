@@ -3,6 +3,7 @@ using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.CommandLine.NamingConventionBinder;
 using System.Data;
+using System.Text;
 using UiValueInjector.Core;
 using UiValueInjector.Domain;
 using UiValueInjector.Usecase;
@@ -56,6 +57,12 @@ public class ConsoleController
             "設定ファイルに引き渡す引数"
         );
 
+        //オプション
+        Option<string> charset = new Option<string>(
+            aliases: new string[] {"--charset", "-c"}, 
+            description: "設定ファイルの文字コード",
+            getDefaultValue: () => "UTF-8"
+        );
   
 
         //コマンド体系を定義
@@ -66,6 +73,7 @@ public class ConsoleController
                 app,
                 runningConfig,
                 configArgs,
+                charset,
 
                 CommandHandler.Create(this.Launch)
             }
@@ -78,56 +86,26 @@ public class ConsoleController
 //=====================================================================================================
 
 
-    private int Launch(string app, string runningConfig, string[] configArgs)
+    private int Launch(
+        string app, 
+        string runningConfig, 
+        string[] configArgs,
+        string charset
+    )
     {
         return ExceptionUtil.TryCatch(0, 1, () => {
 
-            // var text = this.parser.test(new RunningConfig(new List<Domain.Rule>()
-            // {
-            //     new Domain.Rule(
-            //         new RuleName("key"),
-            //         TimingType.Always,
-            //         new RuleValue("value"),
-            //         ImmutableList.Create(
-            //             new ElementSelector(ElementFilterType.AutomationId, ""),
-            //             new ElementSelector(ElementFilterType.ControlType, "DataItem")
-            //         )
-            //     )
-            // }));
+            //コンフィグ読み込み
+            var config = this.parser.ParseFromFile(
+                runningConfig, 
+                Encoding.GetEncoding(charset),
+                configArgs
+            );
 
-            // Console.WriteLine(text);
-
-
-            // var obj = this.parser.ParseFromJson("""""
-            // {
-            //     "rules": [
-            //         {
-            //             "name": "name0",
-            //             "timing": "Always",
-            //             "value": "value0",
-            //             "selectors": [
-
-            //                 {
-            //                     "type": "AutomationId",
-            //                     "value": "id"
-            //                 }
-            //             ]
-            //         }
-            //     ]
-
-            // }
-            // """"");
-
-            // var obj = this.parser.ParseFromYaml("""""
-            //   rules:
-            //   - name: name0
-            //     timing: Always
-            //     value: value0
-            //     selectors:
-            //       - type: AutomationId
-            //         value: id
-            // """"");
-
+            this.usecase.Launch(
+                config,
+                new AppPath(app)
+            );
         });
     }
 

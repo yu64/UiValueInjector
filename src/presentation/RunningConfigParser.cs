@@ -22,6 +22,27 @@ internal class RunningConfigParser
     }
 
 
+
+    public RunningConfig ParseFromFile(string path, Encoding charset, string[] args)
+    {
+        string configText = File.ReadAllText(
+            path, 
+            charset
+        );
+
+        var configExt = Path.GetExtension(path);
+
+        var config = (
+            String.Equals(configExt, ".ymal")
+            ?
+            this.ParseFromYaml(configText, args)
+            :
+            this.ParseFromJson(configText, args)
+        );
+
+        return config;
+    }
+
     public RunningConfig ParseFromYaml(string yaml, string[] args)
     {
         string json = this.ToJsonFromYaml(yaml);

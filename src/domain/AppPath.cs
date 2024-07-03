@@ -5,8 +5,8 @@ public readonly record struct AppPath
 {
     public string Value { get; }
 
-    public AppPath(string Value)
+    public AppPath(string value)
     {
-        this.Value = Value;
+        this.Value = value;
     }
 }
