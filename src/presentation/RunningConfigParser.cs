@@ -22,14 +22,14 @@ internal class RunningConfigParser
     }
 
 
-    public RunningConfig ParseFromYaml(string yaml)
+    public RunningConfig ParseFromYaml(string yaml, string[] args)
     {
         string json = this.ToJsonFromYaml(yaml);
-        return this.ParseFromJson(json);
+        return this.ParseFromJson(json, args);
     }
 
 #pragma warning disable CS8602 // null 参照の可能性があるものの逆参照です。
-    public RunningConfig ParseFromJson(string json)
+    public RunningConfig ParseFromJson(string json, string[] args)
     {
         try
         {
@@ -38,14 +38,14 @@ internal class RunningConfigParser
             return new RunningConfig(
                 rules: root["rules"].AsArray().Select((rule) => new Rule(
 
-                    name: new RuleName(rule["name"].GetString()),
+                    name: new RuleName(rule["name"].GetString(args)),
                     timing: rule["timing"].GetEnum<TimingType>(),
-                    value: new RuleValue(rule["value"].GetString()),
+                    value: new RuleValue(rule["value"].GetString(args)),
                     
                     selectors: rule["selectors"].AsArray().Select((selector) => new ElementSelector(
 
                         type: selector["type"].GetEnum<ElementSelectorType>(),
-                        value: selector["value"].GetString()
+                        value: selector["value"].GetString(args)
 
                     )).ToImmutableList()
                 )).ToImmutableList()
@@ -87,6 +87,16 @@ file static class JsonNodeExt
         }
 
         return node.GetValue<string>();
+    }
+
+    public static string GetString(this JsonNode? node, string[] args)
+    {
+        if(node == null)
+        {
+            throw new Exception("JsonNode is null");
+        }
+
+        return String.Format(node.GetValue<string>(), args);
     }
 
     public static E GetEnum<E>(this JsonNode? node)
