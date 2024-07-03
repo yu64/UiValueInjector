@@ -26,7 +26,7 @@
             "args": [
                 "launch",
                 "${input:requestTargetAppPath}",
-                "./launch_config.yaml",
+                "${input:requestConfigPath}",
                 "arg0",
                 "arg1",
                 "arg2"
@@ -43,6 +43,12 @@
             "type": "promptString",
             "description": "実行対象のパスを指定",
             "default": "./tool/targetApp.ps1"
+        },
+        {
+            "id": "requestConfigPath",
+            "type": "promptString",
+            "description": "実行対象のパスを指定",
+            "default": "./data/launch_config.yaml"
         }
     ]
 }

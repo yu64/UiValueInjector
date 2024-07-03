@@ -1,5 +1,5 @@
 
-namespace UiValueInjector;
+namespace UiValueInjector.Domain;
 
 public readonly record struct AppPath
 {

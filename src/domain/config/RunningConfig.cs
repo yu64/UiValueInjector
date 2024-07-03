@@ -1,10 +1,16 @@
 
+using System.Collections.Immutable;
 using System.Data;
 
-namespace UiValueInjector;
+namespace UiValueInjector.Domain;
 
 public readonly record struct RunningConfig
 {
-    public IDictionary<RuleName, Rule> Rules { get; }
+    public ImmutableList<Rule> Rules { get; }
+
+    public RunningConfig(ImmutableList<Rule> rules)
+    {
+        this.Rules = rules;
+    }
 }
 

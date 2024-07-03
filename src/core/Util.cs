@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Text.Json;
 
-namespace UiValueInjector;
+namespace UiValueInjector.Core;
 
 public static class ExceptionUtil
 {

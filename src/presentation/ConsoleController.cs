@@ -1,24 +1,27 @@
-using System;
 using System.Collections.Immutable;
 using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.CommandLine.NamingConventionBinder;
 using System.Data;
-using System.Runtime.Serialization;
-using System.Text.Json;
-using UiValueInjector;
+using UiValueInjector.Core;
+using UiValueInjector.Domain;
+using UiValueInjector.Usecase;
 
-namespace UiValueInjector;
+namespace UiValueInjector.Presentation;
 
 
 public class ConsoleController
 {   
-    private readonly Usecase usecase;
+    private readonly InjectUsecase usecase;
+    private readonly RunningConfigParser parser;
     private readonly RootCommand root;
     
-    public ConsoleController(Usecase usecase)
+    public ConsoleController(
+        InjectUsecase usecase
+    )
     {
         this.usecase = usecase;
+        this.parser = new RunningConfigParser();
         this.root = this.DefineCommand();
     }
 
@@ -79,8 +82,51 @@ public class ConsoleController
     {
         return ExceptionUtil.TryCatch(0, 1, () => {
 
-            
+            // var text = this.parser.test(new RunningConfig(new List<Domain.Rule>()
+            // {
+            //     new Domain.Rule(
+            //         new RuleName("key"),
+            //         TimingType.Always,
+            //         new RuleValue("value"),
+            //         ImmutableList.Create(
+            //             new ElementSelector(ElementFilterType.AutomationId, ""),
+            //             new ElementSelector(ElementFilterType.ControlType, "DataItem")
+            //         )
+            //     )
+            // }));
 
+            // Console.WriteLine(text);
+
+
+            // var obj = this.parser.ParseFromJson("""""
+            // {
+            //     "rules": [
+            //         {
+            //             "name": "name0",
+            //             "timing": "Always",
+            //             "value": "value0",
+            //             "selectors": [
+
+            //                 {
+            //                     "type": "AutomationId",
+            //                     "value": "id"
+            //                 }
+            //             ]
+            //         }
+            //     ]
+
+            // }
+            // """"");
+
+            // var obj = this.parser.ParseFromYaml("""""
+            //   rules:
+            //   - name: name0
+            //     timing: Always
+            //     value: value0
+            //     selectors:
+            //       - type: AutomationId
+            //         value: id
+            // """"");
 
         });
     }

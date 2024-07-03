@@ -1,0 +1,21 @@
+
+
+{
+  "rules": [
+
+    {
+      "name": "Sample1",
+      "timing": "Always",
+      "value": "in_{0}",
+      "selectors": [
+
+        {
+          "type": "automationId",
+          "value": "txtId"
+        }
+      ]
+    }
+  ]
+}
+  
+          
