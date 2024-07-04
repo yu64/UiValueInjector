@@ -11,7 +11,7 @@ public record Rule
     private readonly RuleValue Value;
     private readonly ImmutableHashSet<ElementSelector> Selectors;
 
-    private RuleCallCount count;
+    private bool isFirst;
 
 
     public Rule(
@@ -25,12 +25,17 @@ public record Rule
         this.Timing = timing;
         this.Value = value;
         this.Selectors = selectors;
-        this.count = new RuleCallCount();
+        this.isFirst = true;
     }
 
     public bool IsDisable()
     {
-        return this.count.IsOverlimit(this.Timing);
+        return this.Timing switch
+        {
+            TimingType.Once => this.isFirst,
+            TimingType.Always => false,
+            _ => throw new Exception("Not Found")
+        };
     }
 
     public void ApplyTo(IElementRepository repo)
@@ -60,8 +65,7 @@ public record Rule
             ele.SetValue(this.Value);
         }
 
-        //呼び出し回数を更新
-        this.count = this.count.Increment();
+        this.isFirst = false;
     }
 
 
