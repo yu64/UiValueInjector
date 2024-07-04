@@ -11,7 +11,7 @@ using UiValueInjector.Usecase;
 namespace UiValueInjector.Presentation;
 
 
-public class ConsoleController<C, R>
+public class ConsoleController
 {   
     private readonly InjectUsecase usecase;
     private readonly IConnectorFactory connectorFactory;

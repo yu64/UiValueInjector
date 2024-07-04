@@ -19,7 +19,7 @@ public readonly record struct RuleSet
         return this.Rules.Any((rule) => !rule.IsDisable());
     }
     
-    public void ApplyTo(IApp app)
+    public void ApplyTo(IElementRepository app)
     {
         var enableRules = this.Rules.Where((rule) => !rule.IsDisable());
 

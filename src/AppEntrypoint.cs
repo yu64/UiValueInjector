@@ -1,5 +1,6 @@
 ﻿
 using UiValueInjector.Domain;
+using UiValueInjector.Infrastructure.Text;
 using UiValueInjector.Presentation;
 using UiValueInjector.Usecase;
 
@@ -11,14 +12,13 @@ class AppEntrypoint
     public static async Task<int> Main(string[] args)
     {
 
-        var connectorFactory = (IAppConnectorFactory)new PlaceHolderConnectorFactory();
-        var selectorFactory = (IElementSelectorFactory)new PlaceHolderSelectorFactory();
+        var connectorFactory = new TextLineConnectorFactory();
 
         var usecase = new InjectUsecase();
+
         var con = new ConsoleController(
             usecase,
-            connectorFactory,
-            selectorFactory
+            connectorFactory
         );
 
         return await con.InvokeAsync(args);

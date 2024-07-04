@@ -23,7 +23,7 @@ public class InjectUsecase
     {
 
         //操作対象を起動
-        using IApp app = config.Connector.Connect();
+        using IElementRepository repo = config.Connector.Connect();
 
 
         //非同期処理で監視処理
@@ -34,7 +34,7 @@ public class InjectUsecase
             while(!ruleSet.IsDisable())
             {
                 //操作対象にルールを適用する
-                ruleSet.ApplyTo(app);
+                ruleSet.ApplyTo(repo);
             }
         });
         
