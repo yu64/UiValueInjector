@@ -47,9 +47,9 @@ public class ConsoleController
             "起動対象のアプリのパス"
         );
 
-        Argument<string> runningConfig = new Argument<string>(
-            "runningConfig",
-            "実行内容の設定ファイル"
+        Argument<string> configPath = new Argument<string>(
+            "configPath",
+            "実行ルールの設定ファイル"
         );
 
         Argument<string[]> configArgs = new Argument<string[]>(
@@ -71,7 +71,7 @@ public class ConsoleController
             new SubCommand("launch", "実行")
             {
                 app,
-                runningConfig,
+                configPath,
                 configArgs,
                 charset,
 
@@ -88,7 +88,7 @@ public class ConsoleController
 
     private int Launch(
         string app, 
-        string runningConfig, 
+        string configPath, 
         string[] configArgs,
         string charset
     )
@@ -97,7 +97,7 @@ public class ConsoleController
 
             //コンフィグ読み込み
             var config = this.parser.ParseFromFile(
-                runningConfig, 
+                configPath, 
                 Encoding.GetEncoding(charset),
                 configArgs
             );

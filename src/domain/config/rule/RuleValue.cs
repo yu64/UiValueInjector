@@ -3,7 +3,7 @@ namespace UiValueInjector.Domain;
 
 public readonly record struct RuleValue
 {
-    public string Value { get; }
+    private readonly string Value;
 
     public RuleValue(string Value)
     {

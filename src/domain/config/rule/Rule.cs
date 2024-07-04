@@ -5,10 +5,10 @@ namespace UiValueInjector.Domain;
 
 public readonly record struct Rule
 {
-    public RuleName Name { get; }
-    public TimingType Timing { get; }
-    public RuleValue Value { get; }
-    public ImmutableList<ElementSelector> Selectors { get; }
+    private readonly RuleName Name;
+    private readonly TimingType Timing;
+    private readonly RuleValue Value;
+    private readonly ImmutableList<ElementSelector> Selectors;
 
 
     public Rule(

@@ -1,5 +1,6 @@
 
 using System.Collections.Immutable;
+using System.IO.Packaging;
 using UiValueInjector.Domain;
 using UiValueInjector.Presentation;
 
@@ -15,21 +16,22 @@ public class InjectUsecase
     }
 
 
-    internal void Launch(RunningConfig config, AppPath appPath)
+    internal void Launch(Config config, AppPath appPath)
     {
         //操作対象を起動
-        // IApp app = this.appFacotry.Launch(appPath);
+        IApp app = this.appFacotry.Launch(appPath);
+        
+        List<Rule> activeRules = config.Rules.ToList();
+
+        
+
+        
+        activeRules.ForEach((rule) => {
+
+            app.SetValueToElement(rule);
 
 
-        // config.Rules.ForEach((rule) => {
-
-        //     ImmutableList<IElement> list = app.GetElement(rule.Selectors);
-            
-        //     list.ForEach((ele) => {
-
-        //         ele.SetValue(rule.Value);
-        //     });
-        // });
+        });
 
         
         //非同期でメインループ開始

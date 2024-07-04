@@ -6,8 +6,8 @@ namespace UiValueInjector.Domain;
 
 public readonly record struct ElementSelector
 {
-    public ElementSelectorType Type { get; }
-    public string Value { get; }
+    private readonly ElementSelectorType Type;
+    private readonly string Value;
 
     public ElementSelector(ElementSelectorType type, string value)
     {

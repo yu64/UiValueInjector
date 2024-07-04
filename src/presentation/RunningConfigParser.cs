@@ -23,7 +23,7 @@ internal class RunningConfigParser
 
 
 
-    public RunningConfig ParseFromFile(string path, Encoding charset, string[] args)
+    public Config ParseFromFile(string path, Encoding charset, string[] args)
     {
         string configText = File.ReadAllText(
             path, 
@@ -43,25 +43,25 @@ internal class RunningConfigParser
         return config;
     }
 
-    public RunningConfig ParseFromYaml(string yaml, string[] args)
+    public Config ParseFromYaml(string yaml, string[] args)
     {
         string json = this.ToJsonFromYaml(yaml);
         return this.ParseFromJson(json, args);
     }
 
 #pragma warning disable CS8602 // null 参照の可能性があるものの逆参照です。
-    public RunningConfig ParseFromJson(string json, string[] args)
+    public Config ParseFromJson(string json, string[] args)
     {
         try
         {
             var root = JsonNode.Parse(json);
 
-            return new RunningConfig(
+            return new Config(
                 rules: root["rules"].AsArray().Select((rule) => new Rule(
 
-                    name: new RuleName(rule["name"].GetString(args)),
+                    name: rule["name"].GetObj((v) => new RuleName(v)),
                     timing: rule["timing"].GetEnum<TimingType>(),
-                    value: new RuleValue(rule["value"].GetString(args)),
+                    value: rule["value"].GetObj((v) => new RuleValue(v)),
                     
                     selectors: rule["selectors"].AsArray().Select((selector) => new ElementSelector(
 
@@ -123,6 +123,11 @@ file static class JsonNodeExt
     public static E GetEnum<E>(this JsonNode? node)
     {
         return (E)Enum.Parse(typeof(E), node.GetString());
+    }
+
+    public static T GetObj<T>(this JsonNode? node, Func<string, T> func)
+    {
+        return func(node.GetString());
     }
 
 
