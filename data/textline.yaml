@@ -1,0 +1,9 @@
+rules:
+  - name: Sample1
+    timing: Always
+    selectors:
+      - type: name
+        value: property_target1
+      - type: name
+        value: property_target2
+    value: "in_{0}"

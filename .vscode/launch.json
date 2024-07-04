@@ -35,6 +35,24 @@
             "console": "internalConsole",
             "stopAtEntry": false
         },
+        {
+            "name": "[app] launch [textline]",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/bin/Debug/net6.0-windows7.0/win-x64/UiValueInjector.dll",
+            "args": [
+                "launch",
+                "./data/textline.txt",
+                "./data/textline.yaml",
+                "arg0",
+                "arg1",
+                "arg2"
+            ],
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
     ],
 
     "inputs": [

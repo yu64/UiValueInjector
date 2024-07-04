@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace UiValueInjector.Domain;
 
-public record struct Rule
+public record Rule
 {
     private readonly RuleName Name;
     private readonly TimingType Timing;

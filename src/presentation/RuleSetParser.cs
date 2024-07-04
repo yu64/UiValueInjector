@@ -32,13 +32,12 @@ internal class ConfigParser
 
         var configExt = Path.GetExtension(path);
 
-        return (
-            String.Equals(configExt, ".ymal")
-            ?
-            this.ParseFromYaml(configText, args)
-            :
-            this.ParseFromJson(configText, args)
-        );
+        return configExt switch
+        {
+            ".json" => this.ParseFromJson(configText, args),
+            ".yaml" => this.ParseFromYaml(configText, args),
+            _ => throw new Exception("unsupport config")
+        };
     }
 
     public RuleSet ParseFromYaml(string yaml, string[] args)
@@ -57,22 +56,22 @@ internal class ConfigParser
             return new RuleSet(
                 rules: root["rules"].AsArray().Select((rule) => new Rule(
 
-                    name: rule["name"].GetObj((v) => new RuleName(v)),
+                    name: new RuleName(rule["name"].GetString(args)),
                     timing: rule["timing"].GetEnum<TimingType>(),
-                    value: rule["value"].GetObj((v) => new RuleValue(v)),
+                    value: new RuleValue(rule["value"].GetString(args)),
                     
                     selectors: rule["selectors"].AsArray().Select((selector) => new ElementSelector(
 
-                        type: selector["type"].GetString(),
+                        type: selector["type"].GetString(args),
                         value: selector["value"].GetString(args)
 
                     )).ToImmutableHashSet()
                 )).ToImmutableHashSet()
             );
         }
-        catch
+        catch(Exception e)
         {
-            throw;
+            throw new Exception("Fail Parse Config", e);
         }
         
     }

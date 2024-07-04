@@ -18,7 +18,10 @@ public class TextLineRepository : IElementRepository
         return File.ReadAllLines(this.path, Encoding.GetEncoding("UTF-8"))
         .Where((s) => s.Contains(":"))
         .Select((s) => s.Split(":"))
-        .ToDictionary(v => v[0], v => v[1]);
+        .ToDictionary(
+            v => v[0].Trim(), 
+            v => v[1].Trim()
+        );
     }
 
     public void Write(IDictionary<string, string> lines)

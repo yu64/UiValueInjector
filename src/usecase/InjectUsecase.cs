@@ -39,7 +39,7 @@ public class InjectUsecase
         });
         
 
-    
+        task.Wait();
         
     }
 }

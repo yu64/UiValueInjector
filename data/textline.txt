@@ -1,0 +1,4 @@
+property0: value0
+property1: value1
+property_target: in_arg0
+property_target1: value

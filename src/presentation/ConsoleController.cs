@@ -60,7 +60,7 @@ public class ConsoleController
         );
 
         Argument<string[]> ruleConfigArgs = new Argument<string[]>(
-            "configArgs",
+            "ruleConfigArgs",
             "設定ファイルに引き渡す引数"
         );
 

@@ -33,7 +33,7 @@ public readonly record struct RuleCallCount
             return false;
         }
 
-        return limit <= this.Value;
+        return (limit <= this.Value);
     }
 }
 

@@ -16,7 +16,9 @@ public readonly record struct RuleSet
 
     public bool IsDisable()
     {   
-        return this.Rules.Any((rule) => !rule.IsDisable());
+        //一つでも有効なものがあるか
+        bool isEnable = this.Rules.Any((rule) => !rule.IsDisable());
+        return !isEnable;
     }
     
     public void ApplyTo(IElementRepository app)
