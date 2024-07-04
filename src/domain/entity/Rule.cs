@@ -9,7 +9,7 @@ public record struct Rule
     private readonly RuleName Name;
     private readonly TimingType Timing;
     private readonly RuleValue Value;
-    private readonly ImmutableHashSet<IElementSelector> Selectors;
+    private readonly ImmutableHashSet<ElementSelector> Selectors;
 
     private RuleCallCount count;
 
@@ -18,7 +18,7 @@ public record struct Rule
         RuleName name,
         TimingType timing,
         RuleValue value,
-        ImmutableHashSet<IElementSelector> selectors
+        ImmutableHashSet<ElementSelector> selectors
     )
     {
         this.Name = name;
@@ -33,7 +33,7 @@ public record struct Rule
         return this.count.IsOverlimit(this.Timing);
     }
 
-    public void ApplyTo(IApp app)
+    public void ApplyTo(IElementRepository repo)
     {
         //ルールが無効であれば、実行しない。
         if(this.IsDisable())
@@ -43,10 +43,8 @@ public record struct Rule
         }
 
         //ルールに基づいて抽出
-        var eleCollection = this.Selectors
-        .SelectMany((s) => s.SelectElement(app))
-        .ToImmutableHashSet()
-        ;
+        var eleCollection = repo.SelectElement(this.Selectors);
+
 
         //該当がない場合、終了
         if(eleCollection.IsEmpty)
@@ -56,10 +54,10 @@ public record struct Rule
         }
 
         //該当の要素に値を入力
-        foreach(var v in eleCollection)
+        foreach(var ele in eleCollection)
         {
-            Debug.WriteLine($"{this.Name} {v}: Set Value {this.Value}");
-            v.SetValue(this.Value);
+            Debug.WriteLine($"{this.Name} {ele}: Set Value {this.Value}");
+            ele.SetValue(this.Value);
         }
 
         //呼び出し回数を更新

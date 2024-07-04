@@ -9,11 +9,11 @@ namespace UiValueInjector.Domain;
 /// </summary>
 public readonly record struct Config
 {
-    public readonly IAppConnector Connector { get; }
+    public readonly IConnector Connector { get; }
     public readonly RuleSet RuleSet { get; }
 
     public Config(
-        IAppConnector connector,
+        IConnector connector,
         RuleSet ruleSet
     )
     {

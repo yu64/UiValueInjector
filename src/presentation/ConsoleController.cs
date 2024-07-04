@@ -11,10 +11,10 @@ using UiValueInjector.Usecase;
 namespace UiValueInjector.Presentation;
 
 
-public class ConsoleController
+public class ConsoleController<C, R>
 {   
     private readonly InjectUsecase usecase;
-    private readonly IAppConnectorFactory connectorFactory;
+    private readonly IConnectorFactory connectorFactory;
 
     private readonly ConfigParser parser;
     private readonly RootCommand root;
@@ -23,14 +23,13 @@ public class ConsoleController
     
     public ConsoleController(
         InjectUsecase usecase,
-        IAppConnectorFactory connectorFactory,
-        IElementSelectorFactory selectorFactory
+        IConnectorFactory connectorFactory
     )
     {
         this.usecase = usecase;
         this.connectorFactory = connectorFactory;
 
-        this.parser = new ConfigParser(selectorFactory);
+        this.parser = new ConfigParser();
         this.root = this.DefineCommand();
     }
 

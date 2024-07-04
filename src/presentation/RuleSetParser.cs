@@ -15,13 +15,10 @@ namespace UiValueInjector.Presentation;
 
 internal class ConfigParser
 {
-    private readonly IElementSelectorFactory selectorFact;
 
-    internal ConfigParser(
-        IElementSelectorFactory selectorFact
-    )
+    internal ConfigParser()
     {
-        this.selectorFact = selectorFact;
+        
     }
 
 
@@ -64,9 +61,9 @@ internal class ConfigParser
                     timing: rule["timing"].GetEnum<TimingType>(),
                     value: rule["value"].GetObj((v) => new RuleValue(v)),
                     
-                    selectors: rule["selectors"].AsArray().Select((selector) => this.selectorFact.Create(
+                    selectors: rule["selectors"].AsArray().Select((selector) => new ElementSelector(
 
-                        type: selector["type"].GetEnum<ElementSelectorType>(),
+                        type: selector["type"].GetString(),
                         value: selector["value"].GetString(args)
 
                     )).ToImmutableHashSet()
