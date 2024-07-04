@@ -1,9 +1,9 @@
 namespace UiValueInjector.Domain;
 
-public class PlaceHolderSelectorFactory : IElementSelectorFactory
+public class PlaceHolderConnectorFactory : IAppConnectorFactory
 {
-    public IElementSelector Create(ElementSelectorType type, string value)
+    public IAppConnector CreateLaunchConnector(string path)
     {
-        throw new NotImplementedException();
+        return new PlaceHolderAppConnector(path);
     }
 }

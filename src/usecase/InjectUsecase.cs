@@ -23,7 +23,7 @@ public class InjectUsecase
     {
 
         //操作対象を起動
-        IApp app = config.Connector.Connect();
+        using IApp app = config.Connector.Connect();
 
 
         //非同期処理で監視処理

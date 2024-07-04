@@ -11,8 +11,8 @@ class AppEntrypoint
     public static async Task<int> Main(string[] args)
     {
 
-        var connectorFactory = (IAppConnectorFactory)null;
-        var selectorFactory = (IElementSelectorFactory)null;
+        var connectorFactory = (IAppConnectorFactory)new PlaceHolderConnectorFactory();
+        var selectorFactory = (IElementSelectorFactory)new PlaceHolderSelectorFactory();
 
         var usecase = new InjectUsecase();
         var con = new ConsoleController(

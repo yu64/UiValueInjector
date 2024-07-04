@@ -10,8 +10,4 @@ public class PlaceHolderElementSelector : IElementSelector
         throw new NotImplementedException();
     }
 
-    public void SetValue(RuleValue value)
-    {
-        throw new NotImplementedException();
-    }
 }

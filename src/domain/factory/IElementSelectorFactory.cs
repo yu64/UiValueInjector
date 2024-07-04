@@ -1,7 +1,7 @@
 namespace UiValueInjector.Domain;
 
-public interface IElementSelectorFactory
+public interface IElementSelectorFactory<A> where A : IApp
 {
     
-    public IElementSelector Create(ElementSelectorType type, string value);
+    public IElementSelector<A> Create(ElementSelectorType type, string value);
 }
