@@ -33,6 +33,10 @@ public class TextLineRepository : IElementRepository
         );
     }
     
+    public bool IsDispose()
+    {
+        return false;
+    }
 
     public ImmutableHashSet<IElement> SelectElement(ImmutableHashSet<ElementSelector> selectors)
     {

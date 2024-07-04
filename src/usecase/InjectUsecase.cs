@@ -22,24 +22,33 @@ public class InjectUsecase
     internal void Inject(Config config)
     {
 
-        //操作対象を起動
+        RuleSet ruleSet = config.RuleSet;
+        bool isStop = false;
+
+        //操作対象に接続
         using IElementRepository repo = config.Connector.Connect();
 
 
         //非同期処理で監視処理
-        RuleSet ruleSet = config.RuleSet;
-        var task = Task.Run(() => {
+        var loopTask = Task.Run(() => {
             
             //適用できるルールがなくなるまでループする
-            while(!ruleSet.IsDisable())
+            while(!ruleSet.IsDisable() && !repo.IsDispose() && !isStop)
             {
                 //操作対象にルールを適用する
                 ruleSet.ApplyTo(repo);
             }
         });
+
+        //キー入力で停止
+        var stopTask = Task.Run(() => {
+            
+            Console.ReadLine();
+            isStop = true;
+        });
         
 
-        task.Wait();
+        loopTask.Wait();
         
     }
 }
