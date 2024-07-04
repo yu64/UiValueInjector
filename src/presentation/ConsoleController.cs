@@ -14,15 +14,23 @@ namespace UiValueInjector.Presentation;
 public class ConsoleController
 {   
     private readonly InjectUsecase usecase;
-    private readonly RunningConfigParser parser;
+    private readonly IAppConnectorFactory connectorFactory;
+
+    private readonly ConfigParser parser;
     private readonly RootCommand root;
+
+
     
     public ConsoleController(
-        InjectUsecase usecase
+        InjectUsecase usecase,
+        IAppConnectorFactory connectorFactory,
+        IElementSelectorFactory selectorFactory
     )
     {
         this.usecase = usecase;
-        this.parser = new RunningConfigParser();
+        this.connectorFactory = connectorFactory;
+
+        this.parser = new ConfigParser(selectorFactory);
         this.root = this.DefineCommand();
     }
 
@@ -47,12 +55,12 @@ public class ConsoleController
             "起動対象のアプリのパス"
         );
 
-        Argument<string> configPath = new Argument<string>(
-            "configPath",
+        Argument<string> ruleConfigPath = new Argument<string>(
+            "ruleConfigPath",
             "実行ルールの設定ファイル"
         );
 
-        Argument<string[]> configArgs = new Argument<string[]>(
+        Argument<string[]> ruleConfigArgs = new Argument<string[]>(
             "configArgs",
             "設定ファイルに引き渡す引数"
         );
@@ -71,8 +79,8 @@ public class ConsoleController
             new SubCommand("launch", "実行")
             {
                 app,
-                configPath,
-                configArgs,
+                ruleConfigPath,
+                ruleConfigArgs,
                 charset,
 
                 CommandHandler.Create(this.Launch)
@@ -88,23 +96,25 @@ public class ConsoleController
 
     private int Launch(
         string app, 
-        string configPath, 
-        string[] configArgs,
+        string ruleConfigPath, 
+        string[] ruleConfigArgs,
         string charset
     )
     {
         return ExceptionUtil.TryCatch(0, 1, () => {
 
-            //コンフィグ読み込み
-            var config = this.parser.ParseFromFile(
-                configPath, 
+            //ルールコンフィグ読み込み
+            var ruleSet = this.parser.ParseFromFile(
+                ruleConfigPath, 
                 Encoding.GetEncoding(charset),
-                configArgs
+                ruleConfigArgs
             );
 
-            this.usecase.Launch(
-                config,
-                new AppPath(app)
+            this.usecase.Inject(
+                new Config(
+                    this.connectorFactory.CreateLaunchConnector(app),
+                    ruleSet
+                )
             );
         });
     }

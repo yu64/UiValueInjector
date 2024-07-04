@@ -2,5 +2,7 @@ namespace UiValueInjector.Domain;
 
 public interface IElement
 {
-    public void SetValue(RuleStatus rule);
+    public void SetValue(RuleValue value);
+
+
 }

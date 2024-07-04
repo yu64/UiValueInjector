@@ -6,6 +6,9 @@ using UiValueInjector.Presentation;
 
 namespace UiValueInjector.Usecase;
 
+/// <summary>
+/// 要件「何かに接続し、AutomationIdなどの条件に適した要素の値を、指定回数まで変更する」
+/// </summary>
 public class InjectUsecase
 {
 
@@ -16,28 +19,27 @@ public class InjectUsecase
     }
 
 
-    internal void Launch(Config config, AppPath appPath)
+    internal void Inject(Config config)
     {
+
         //操作対象を起動
-        IApp app = this.appFacotry.Launch(appPath);
-        
-        List<Rule> activeRules = config.Rules.ToList();
-
-        
-
-        
-        activeRules.ForEach((rule) => {
-
-            app.SetValueToElement(rule);
+        IApp app = config.Connector.Connect();
 
 
+        //非同期処理で監視処理
+        RuleSet ruleSet = config.RuleSet;
+        var task = Task.Run(() => {
+            
+            //適用できるルールがなくなるまでループする
+            while(!ruleSet.IsDisable())
+            {
+                //操作対象にルールを適用する
+                ruleSet.ApplyTo(app);
+            }
         });
-
         
-        //非同期でメインループ開始
 
-        //
-
+    
         
     }
 }

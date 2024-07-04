@@ -13,17 +13,20 @@ using YamlDotNet.Serialization.NamingConventions;
 namespace UiValueInjector.Presentation;
 
 
-internal class RunningConfigParser
+internal class ConfigParser
 {
+    private readonly IElementSelectorFactory selectorFact;
 
-    internal RunningConfigParser()
+    internal ConfigParser(
+        IElementSelectorFactory selectorFact
+    )
     {
-        //なし
+        this.selectorFact = selectorFact;
     }
 
 
 
-    public Config ParseFromFile(string path, Encoding charset, string[] args)
+    public RuleSet ParseFromFile(string path, Encoding charset, string[] args)
     {
         string configText = File.ReadAllText(
             path, 
@@ -32,44 +35,42 @@ internal class RunningConfigParser
 
         var configExt = Path.GetExtension(path);
 
-        var config = (
+        return (
             String.Equals(configExt, ".ymal")
             ?
             this.ParseFromYaml(configText, args)
             :
             this.ParseFromJson(configText, args)
         );
-
-        return config;
     }
 
-    public Config ParseFromYaml(string yaml, string[] args)
+    public RuleSet ParseFromYaml(string yaml, string[] args)
     {
         string json = this.ToJsonFromYaml(yaml);
         return this.ParseFromJson(json, args);
     }
 
 #pragma warning disable CS8602 // null 参照の可能性があるものの逆参照です。
-    public Config ParseFromJson(string json, string[] args)
+    public RuleSet ParseFromJson(string json, string[] args)
     {
         try
         {
             var root = JsonNode.Parse(json);
 
-            return new Config(
+            return new RuleSet(
                 rules: root["rules"].AsArray().Select((rule) => new Rule(
 
                     name: rule["name"].GetObj((v) => new RuleName(v)),
                     timing: rule["timing"].GetEnum<TimingType>(),
                     value: rule["value"].GetObj((v) => new RuleValue(v)),
                     
-                    selectors: rule["selectors"].AsArray().Select((selector) => new ElementSelector(
+                    selectors: rule["selectors"].AsArray().Select((selector) => this.selectorFact.Create(
 
                         type: selector["type"].GetEnum<ElementSelectorType>(),
                         value: selector["value"].GetString(args)
 
-                    )).ToImmutableList()
-                )).ToImmutableList()
+                    )).ToImmutableHashSet()
+                )).ToImmutableHashSet()
             );
         }
         catch
