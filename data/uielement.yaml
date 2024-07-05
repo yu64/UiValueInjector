@@ -1,0 +1,7 @@
+rules:
+  - name: Sample1
+    timing: Once
+    selectors:
+      - type: ControlType
+        value: Document
+    value: "in_{0}"

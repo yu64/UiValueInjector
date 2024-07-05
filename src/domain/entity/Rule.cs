@@ -32,7 +32,7 @@ public record Rule
     {
         return this.Timing switch
         {
-            TimingType.Once => this.isFirst,
+            TimingType.Once => !this.isFirst,
             TimingType.Always => false,
             _ => throw new Exception("Not Found")
         };

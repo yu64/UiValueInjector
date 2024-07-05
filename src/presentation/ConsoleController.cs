@@ -102,16 +102,17 @@ public class ConsoleController
     {
         return ExceptionUtil.TryCatch(0, 1, () => {
 
+
             //ルールコンフィグ読み込み
             var ruleSet = this.parser.ParseFromFile(
-                ruleConfigPath, 
+                Path.GetFullPath(ruleConfigPath), 
                 Encoding.GetEncoding(charset),
                 ruleConfigArgs
             );
 
             this.usecase.Inject(
                 new Config(
-                    this.connectorFactory.CreateLaunchConnector(app),
+                    this.connectorFactory.CreateLaunchConnector(Path.GetFullPath(app)),
                     ruleSet
                 )
             );

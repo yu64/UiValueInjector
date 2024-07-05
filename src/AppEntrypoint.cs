@@ -12,7 +12,8 @@ class AppEntrypoint
     public static async Task<int> Main(string[] args)
     {
 
-        var connectorFactory = new TextLineConnectorFactory();
+        //var connectorFactory = new TextLineConnectorFactory();
+        var connectorFactory = new UiElementConnectorFactory();
 
         var usecase = new InjectUsecase();
 
