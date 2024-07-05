@@ -14,12 +14,14 @@ UI自動化を用いて、UI要素に値を設定するアプリ。
 ----
 rules:
   - name: RuleName
-    timing: Always
+    timing: Once
     elements:
-      - type: automationId
-        value: txtBoxId
+      - type: ControlType
+        value: Document
     value: "in_{0}"
 ----
+
+TIP: notepad.exe (ver 22H2, OS Build 19045.4529) を対象とした例
 
 
 ## 不足機能
