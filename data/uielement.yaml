@@ -1,5 +1,5 @@
 rules:
-  - name: Sample1
+  - name: WriteToNotepad.exe
     timing: Once
     selectors:
       - type: ControlType

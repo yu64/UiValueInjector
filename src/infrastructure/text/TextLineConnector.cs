@@ -13,7 +13,7 @@ public class TextLineConnector : IConnector
         this.path = path;
     }
 
-    public IElementRepository Connect()
+    public async Task<IElementRepository> Connect()
     {
         return new TextLineRepository(this.path);
     }

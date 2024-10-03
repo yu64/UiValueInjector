@@ -110,7 +110,7 @@ public class ConsoleController
                 ruleConfigArgs
             );
 
-            this.usecase.Inject(
+            var _ = this.usecase.Inject(
                 new Config(
                     this.connectorFactory.CreateLaunchConnector(Path.GetFullPath(app)),
                     ruleSet

@@ -4,5 +4,5 @@ namespace UiValueInjector.Domain;
 public interface IConnector
 {   
 
-    IElementRepository Connect();
+    Task<IElementRepository> Connect();
 }

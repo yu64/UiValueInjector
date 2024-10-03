@@ -19,14 +19,14 @@ public class InjectUsecase
     }
 
 
-    internal void Inject(Config config)
+    internal async Task Inject(Config config)
     {
 
         RuleSet ruleSet = config.RuleSet;
         bool isStop = false;
 
         //操作対象に接続
-        using IElementRepository repo = config.Connector.Connect();
+        using IElementRepository repo = await config.Connector.Connect();
 
 
         //非同期処理で監視処理

@@ -61,7 +61,7 @@
             "program": "${workspaceFolder}/bin/Debug/net6.0-windows7.0/win-x64/UiValueInjector.dll",
             "args": [
                 "launch",
-                "C:/Windows/System32/notepad.exe",
+                "C:/Windows/System32/notepad.exe ${workspaceFolder}/data/text.txt",
                 "./data/uielement.yaml",
                 "arg0",
                 "arg1",
